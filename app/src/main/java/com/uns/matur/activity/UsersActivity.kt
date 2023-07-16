@@ -1,5 +1,6 @@
 package com.uns.matur.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,16 @@ class UsersActivity : AppCompatActivity() {
         binding.userRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         getUsersList()
+
+        binding.imgBack.setOnClickListener() {
+            onBackPressed()
+        }
+
+        binding.imgProfile.setOnClickListener() {
+            val intent = Intent(this@UsersActivity, ProfileActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
     }
 
     fun getUsersList() {

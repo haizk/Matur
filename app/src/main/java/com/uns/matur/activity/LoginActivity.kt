@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
+                finish()
             }
         })
 
@@ -43,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
+            finish()
         }
 
         binding.btnLogin.setOnClickListener {
@@ -81,6 +83,7 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this@LoginActivity, UsersActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         startActivity(intent)
+                        finish()
                     }
                 }
                 else {

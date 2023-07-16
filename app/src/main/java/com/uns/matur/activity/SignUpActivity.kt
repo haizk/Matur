@@ -31,6 +31,7 @@ class SignUpActivity : AppCompatActivity() {
                 val intent = Intent(this@SignUpActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
+                finish()
             }
         })
 
@@ -44,6 +45,7 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
+            finish()
         }
 
         binding.btnSignUp.setOnClickListener {
@@ -118,6 +120,7 @@ class SignUpActivity : AppCompatActivity() {
                         val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         startActivity(intent)
+                        finish()
                     }
                     .addOnFailureListener {
                         Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
