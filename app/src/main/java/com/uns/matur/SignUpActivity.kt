@@ -7,25 +7,29 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.uns.matur.databinding.ActivitySignUpBinding
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignUpBinding
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         auth = FirebaseAuth.getInstance()
+        db = Firebase.firestore
+
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.btnSignUp.setOnClickListener {
             val userName = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
@@ -57,7 +61,14 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Password not match!", Toast.LENGTH_SHORT).show()
             }
             else {
-                registerUser(userName, email, password)
+                val query = db.collection("users").whereEqualTo("userName", userName)
+                query.get().addOnSuccessListener {
+                    if (it.isEmpty) {
+                        registerUser(userName, email, password)
+                    } else {
+                        Toast.makeText(applicationContext, "Username already exists!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -68,7 +79,6 @@ class SignUpActivity : AppCompatActivity() {
                 val user: FirebaseUser? = auth.currentUser
                 val userId: String = user!!.uid
 
-                val db = Firebase.firestore
                 val hashMap = hashMapOf(
                     "userId" to userId,
                     "userName" to userName,
