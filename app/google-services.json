@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1014321703281",
+    "project_id": "matur-c4122",
+    "storage_bucket": "matur-c4122.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014321703281:android:cee592983c7c303538aed0",
+        "android_client_info": {
+          "package_name": "com.android.matur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014321703281-57enpe7697j5fviiv85ptga3hm42j39g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.matur",
+            "certificate_hash": "ded526732bd9932e272990a733f2ea74179087ae"
+          }
+        },
+        {
+          "client_id": "1014321703281-08h4jm1b8m87rm6qon2iko6ip1jtl4kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9fZbgrOgRJ_50WMrgqgxs5BqaOj_lPKw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014321703281-08h4jm1b8m87rm6qon2iko6ip1jtl4kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
