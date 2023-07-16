@@ -6,6 +6,7 @@
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="label_sign_up">Sign Up</string>
     <string name="label_login">Login</string>
+    <string name="label_matur">Matur</string>
     <string name="btn_sign_up">SIGN UP</string>
     <string name="btn_login">LOGIN</string>
 </resources>
