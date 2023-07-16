@@ -30,6 +30,11 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnSignUp.setOnClickListener {
             val userName = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
@@ -89,7 +94,7 @@ class SignUpActivity : AppCompatActivity() {
                     .add(hashMap)
                     .addOnSuccessListener {
                         Toast.makeText(applicationContext, "Sign up success!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
+                        val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                         startActivity(intent)
                     }
                     .addOnFailureListener {
