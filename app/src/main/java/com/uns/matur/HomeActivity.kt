@@ -1,4 +1,4 @@
-package com.android.matur
+package com.uns.matur
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

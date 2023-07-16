@@ -33,7 +33,7 @@
         android:autofillHints="name"
         android:background="@color/colorTextBackground"
         android:fontFamily="@font/varela_round_regular"
-        android:hint="@string/enter_name"
+        android:hint="@string/enter_username"
         android:inputType="text"
         android:padding="10dp"
         android:textColor="@color/colorText" />
@@ -49,7 +49,7 @@
         android:background="@color/colorTextBackground"
         android:fontFamily="@font/varela_round_regular"
         android:hint="@string/enter_email"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:padding="10dp"
         android:textColor="@color/colorText" />
 

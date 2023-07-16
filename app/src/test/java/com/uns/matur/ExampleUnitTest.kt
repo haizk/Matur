@@ -1,4 +1,4 @@
-package com.android.matur
+package com.uns.matur
 
 import org.junit.Test
 

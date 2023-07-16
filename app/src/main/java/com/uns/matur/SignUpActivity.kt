@@ -1,16 +1,15 @@
-package com.android.matur
+package com.uns.matur
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.matur.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.uns.matur.databinding.ActivitySignUpBinding
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -18,7 +17,6 @@ import java.util.regex.Pattern
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var databaseReference: DatabaseReference
     private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,32 +58,38 @@ class SignUpActivity : AppCompatActivity() {
             }
             else {
                 registerUser(userName, email, password)
-                Toast.makeText(applicationContext, "Sign up success!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun registerUser(userName: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { it ->
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) {
             if (it.isSuccessful) {
                 val user: FirebaseUser? = auth.currentUser
                 val userId: String = user!!.uid
 
-                databaseReference =
-                    FirebaseDatabase.getInstance().getReference("Users").child(userId)
+                val db = Firebase.firestore
+                val hashMap = hashMapOf(
+                    "userId" to userId,
+                    "userName" to userName,
+                    "profileImage" to ""
+                )
 
-                val hashMap: HashMap<String, String> = HashMap()
-                hashMap["userId"] = userId
-                hashMap["userName"] = userName
-                hashMap["profileImage"] = ""
-
-                databaseReference.setValue(hashMap).addOnCompleteListener(this) {
-                    Log.d("SignUpActivity", "createUserWithEmail:success")
-                    if (it.isSuccessful) {
+                db.collection("users")
+                    .add(hashMap)
+                    .addOnSuccessListener {
+                        Toast.makeText(applicationContext, "Sign up success!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
                         startActivity(intent)
                     }
-                }
+                    .addOnFailureListener {
+                        Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
+                    }
+
+            } else if(it.exception.toString().contains("The email address is already in use by another account.")) {
+                Toast.makeText(applicationContext, "Email already exists!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
             }
         }
     }
