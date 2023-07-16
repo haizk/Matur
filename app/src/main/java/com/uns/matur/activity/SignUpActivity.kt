@@ -1,4 +1,4 @@
-package com.uns.matur
+package com.uns.matur.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.uns.matur.R
 import com.uns.matur.databinding.ActivitySignUpBinding
 import java.util.regex.Matcher
 import java.util.regex.Pattern

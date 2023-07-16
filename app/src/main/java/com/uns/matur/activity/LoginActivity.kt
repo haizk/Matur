@@ -1,4 +1,4 @@
-package com.uns.matur
+package com.uns.matur.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.uns.matur.R
 import com.uns.matur.databinding.ActivityLoginBinding
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -77,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     if (user != null) {
                         Toast.makeText(applicationContext, "Login success!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                        val intent = Intent(this@LoginActivity, UsersActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         startActivity(intent)
                     }

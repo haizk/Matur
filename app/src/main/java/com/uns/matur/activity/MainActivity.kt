@@ -1,10 +1,11 @@
-package com.uns.matur
+package com.uns.matur.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import com.uns.matur.R
 import com.uns.matur.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
