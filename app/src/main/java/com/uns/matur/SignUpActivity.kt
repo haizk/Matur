@@ -42,28 +42,37 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
             if (TextUtils.isEmpty(userName)) {
-                Toast.makeText(applicationContext, "Username is required!", Toast.LENGTH_SHORT).show()
+                binding.etName.error = "Username is required!"
+                binding.etName.requestFocus()
             }
             else if (isUsernameValid(userName)) {
-                Toast.makeText(applicationContext, "Username badly formatted!", Toast.LENGTH_SHORT).show()
+                binding.etName.error = "Username badly formatted!"
+                binding.etName.requestFocus()
             }
             else if (TextUtils.isEmpty(email)) {
-                Toast.makeText(applicationContext, "Email is required!", Toast.LENGTH_SHORT).show()
+                binding.etEmail.error = "Email is required!"
+                binding.etEmail.requestFocus()
+
             }
             else if (isEmailValid(email)) {
-                Toast.makeText(applicationContext, "Email badly formatted!", Toast.LENGTH_SHORT).show()
+                binding.etEmail.error = "Email badly formatted!"
+                binding.etEmail.requestFocus()
             }
             else if (TextUtils.isEmpty(password)) {
-                Toast.makeText(applicationContext, "Password is required!", Toast.LENGTH_SHORT).show()
+                binding.etPassword.error = "Password is required!"
+                binding.etPassword.requestFocus()
             }
             else if (isPasswordValid(password)) {
-                Toast.makeText(applicationContext, "Password badly formatted!", Toast.LENGTH_SHORT).show()
+                binding.etPassword.error = "Password badly formatted!"
+                binding.etPassword.requestFocus()
             }
             else if (TextUtils.isEmpty(confirmPassword)) {
-                Toast.makeText(applicationContext, "Confirm password is required!", Toast.LENGTH_SHORT).show()
+                binding.etConfirmPassword.error = "Confirm password is required!"
+                binding.etConfirmPassword.requestFocus()
             }
             else if (password != confirmPassword) {
-                Toast.makeText(applicationContext, "Password not match!", Toast.LENGTH_SHORT).show()
+                binding.etConfirmPassword.error = "Password does not match!"
+                binding.etConfirmPassword.requestFocus()
             }
             else {
                 val query = db.collection("users").whereEqualTo("userName", userName)
@@ -71,7 +80,8 @@ class SignUpActivity : AppCompatActivity() {
                     if (it.isEmpty) {
                         registerUser(userName, email, password)
                     } else {
-                        Toast.makeText(applicationContext, "Username already exists!", Toast.LENGTH_SHORT).show()
+                        binding.etName.error = "Username already exists!"
+                        binding.etName.requestFocus()
                     }
                 }
             }
@@ -102,7 +112,8 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
             } else if(it.exception.toString().contains("The email address is already in use by another account.")) {
-                Toast.makeText(applicationContext, "Email already exists!", Toast.LENGTH_SHORT).show()
+                binding.etEmail.error = "Email already exists!"
+                binding.etEmail.requestFocus()
             } else {
                 Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
             }

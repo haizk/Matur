@@ -49,7 +49,7 @@
         android:background="@color/colorTextBackground"
         android:fontFamily="@font/varela_round_regular"
         android:hint="@string/enter_email"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/colorText" />
 
@@ -97,7 +97,8 @@
             android:layout_marginEnd="2dp"
             android:text="@string/btn_sign_up"
             android:textColor="@color/colorAccent"
-            android:background="@color/colorPrimary" />
+            android:background="@color/colorPrimary"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -107,7 +108,8 @@
             android:layout_marginStart="2dp"
             android:text="@string/btn_login"
             android:textColor="@color/colorAccent"
-            android:background="@color/colorPrimary" />
+            android:background="@color/colorSecondary"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 
