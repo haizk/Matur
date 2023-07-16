@@ -32,6 +32,7 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
 
@@ -105,6 +106,7 @@ class SignUpActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         Toast.makeText(applicationContext, "Sign up success!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         startActivity(intent)
                     }
                     .addOnFailureListener {
