@@ -14,4 +14,7 @@
     <string name="btn_login">LOGIN</string>
     <string name="btn_save">SAVE</string>
     <string name="back">back</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="logout">Logout</string>
 </resources>

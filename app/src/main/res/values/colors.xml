@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#813fd7</color>
-    <color name="colorPrimaryVariant">#813fd7</color>
+    <color name="colorPrimary">#29627E</color>
+    <color name="colorPrimaryVariant">#29627E</color>
     <color name="colorOnPrimary">#FFFFFFFF</color>
     <color name="colorOnPrimaryVariant">#FFFFFFFF</color>
 
@@ -20,4 +20,8 @@
     <color name="colorOnError">#FFFFFF</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
+
+    <color name="colorLightYellow">#FFF9C4</color>
+    <color name="colorLightGreen">#C8E6C9</color>
+    <color name="colorLightRed">#FFCDD2</color>
 </resources>

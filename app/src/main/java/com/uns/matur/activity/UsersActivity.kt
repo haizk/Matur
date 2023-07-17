@@ -58,11 +58,11 @@ class UsersActivity : AppCompatActivity() {
                 Toast.makeText(this@UsersActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
             }
 
-        binding.imgBack.setOnClickListener() {
+        binding.imgBack.setOnClickListener {
             onBackPressed()
         }
 
-        binding.imgProfile.setOnClickListener() {
+        binding.imgProfile.setOnClickListener {
             val intent = Intent(this@UsersActivity, ProfileActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
