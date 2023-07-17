@@ -13,19 +13,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            // User is already logged in, navigate to desired activity
             val intent = Intent(this@MainActivity, UsersActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish() // Finish the MainActivity
-            return
+            finish()
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

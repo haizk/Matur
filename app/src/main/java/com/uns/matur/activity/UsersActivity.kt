@@ -3,7 +3,10 @@ package com.uns.matur.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.uns.matur.R
 import com.uns.matur.adapter.UserAdapter
 import com.uns.matur.model.User
@@ -21,6 +24,11 @@ class UsersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser != null) {
+            Toast.makeText(this@UsersActivity, "Sugeng rawuh, ${currentUser.email}", Toast.LENGTH_SHORT).show()
+        }
+
         db = Firebase.firestore
 
         binding = ActivityUsersBinding.inflate(layoutInflater)
@@ -29,6 +37,26 @@ class UsersActivity : AppCompatActivity() {
         binding.userRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         getUsersList()
+
+        val firebaseUser = FirebaseAuth.getInstance().currentUser!!
+        val usersCollection = db.collection("users")
+        usersCollection.whereEqualTo("userId", firebaseUser.uid)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents != null && !documents.isEmpty) {
+                    val userDocument = documents.first()
+                    if(userDocument.getString("profileImage").isNullOrEmpty()) {
+                        binding.imgProfile.setImageResource(R.drawable.profile_image)
+                    } else {
+                        Glide.with(this@UsersActivity).load(userDocument.getString("profileImage")).into(binding.imgProfile)
+                    }
+                } else {
+                    Toast.makeText(this@UsersActivity, "No such document", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this@UsersActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+            }
 
         binding.imgBack.setOnClickListener() {
             onBackPressed()
