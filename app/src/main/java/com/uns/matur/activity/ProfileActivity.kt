@@ -13,6 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.uns.matur.R
 import com.uns.matur.databinding.ActivityProfileBinding
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -68,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
             else {
-                if(binding.etEditUserName.text.toString().isNotEmpty() && binding.etEditUserName.text.toString().length >= 3) {
+                if(binding.etEditUserName.text.toString().isNotEmpty() && isUsernameValid(binding.etEditUserName.text.toString())) {
                     usersCollection.whereEqualTo("userName", binding.etEditUserName.text.toString())
                         .get()
                         .addOnSuccessListener { documents ->
@@ -79,6 +81,7 @@ class ProfileActivity : AppCompatActivity() {
                                         if(documents.documents[0].getString("userName") == documents2.documents[0].getString("userName")) {
                                             binding.etUserName.visibility = View.VISIBLE
                                             binding.etEditUserName.visibility = View.GONE
+                                            binding.btnEditProfile.text = getString(R.string.edit_profile)
                                             binding.btnEditProfile.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@ProfileActivity, R.color.colorLightYellow))
                                             binding.userImage.setOnClickListener(null)
                                             usersCollection.whereEqualTo("userId", firebaseUser.uid)
@@ -132,11 +135,18 @@ class ProfileActivity : AppCompatActivity() {
                             Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
                         }
                 } else {
-                    binding.etEditUserName.error = "Username must be more than 3 characters"
+                    binding.etEditUserName.error = "Username badly formatted!"
                     binding.etEditUserName.requestFocus()
-                    Toast.makeText(this@ProfileActivity, "Username must be more than 3 characters", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Username badly formatted!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    private fun isUsernameValid(username: String): Boolean {
+        val expression = "^[a-z0-9_-]{3,15}$"
+        val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+        val matcher: Matcher = pattern.matcher(username)
+        return matcher.matches()
     }
 }
