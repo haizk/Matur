@@ -17,5 +17,6 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="save_profile">Save Profile</string>
     <string name="logout">Logout</string>
-    <string name="uploading_image">Uploading image...</string>
+    <string name="uploading_image">Uploading image…</string>
+    <string name="loading_chat_list">Loading chat list…</string>
 </resources>

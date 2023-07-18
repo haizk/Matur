@@ -1,5 +1,6 @@
 package com.uns.matur.activity
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,6 @@ import com.uns.matur.adapter.UserAdapter
 import com.uns.matur.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
 import com.google.firebase.ktx.Firebase
 import com.uns.matur.databinding.ActivityUsersBinding
 import com.uns.matur.firebase.FirebaseService
@@ -45,9 +45,16 @@ class UsersActivity : AppCompatActivity() {
 
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         val usersCollection = db.collection("users")
+
+        val dialog = Dialog(this@UsersActivity)
+        dialog.setContentView(R.layout.dialog_loading_chat_list)
+        dialog.setCancelable(false)
+        dialog.show()
+
         usersCollection.whereEqualTo("userId", firebaseUser.uid)
             .get()
             .addOnSuccessListener { documents ->
+                dialog.dismiss()
                 if (documents != null && !documents.isEmpty) {
                     val userDocument = documents.first()
                     if(userDocument.getString("profileImage").isNullOrEmpty()) {
@@ -61,6 +68,7 @@ class UsersActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
+                dialog.dismiss()
                 Toast.makeText(this@UsersActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
             }
 

@@ -8,9 +8,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -19,15 +16,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.uns.matur.R
 import com.uns.matur.adapter.ChatAdapter
 import com.uns.matur.databinding.ActivityChatBinding
 import com.uns.matur.model.Chat
-import com.uns.matur.model.NotificationData
-import com.uns.matur.model.PushNotification
-import org.json.JSONException
-import org.json.JSONObject
 
 class ChatActivity : AppCompatActivity() {
     private var chatList = ArrayList<Chat>()
@@ -35,7 +27,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var usersCollection: CollectionReference
     private lateinit var firebaseUser: FirebaseUser
-    private var topic = ""
+    //private var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +37,7 @@ class ChatActivity : AppCompatActivity() {
         usersCollection = db.collection("users")
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
 
-        var userId = intent.getStringExtra("userId")
-        var userName = intent.getStringExtra("userName")
-        var profileImage = intent.getStringExtra("profileImage")
+        val userId = intent.getStringExtra("userId")
 
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 

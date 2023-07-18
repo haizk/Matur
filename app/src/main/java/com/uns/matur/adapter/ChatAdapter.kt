@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.uns.matur.R
 import com.uns.matur.model.Chat
 import de.hdodenhof.circleimageview.CircleImageView
@@ -16,12 +18,12 @@ import de.hdodenhof.circleimageview.CircleImageView
 class ChatAdapter(private val context: Context, private val chatList: ArrayList<Chat>) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    private val MESSAGE_TYPE_LEFT = 0
-    private val MESSAGE_TYPE_RIGHT = 1
+    private val messageTypeLeft = 0
+    private val messageTypeRight = 1
     private var firebaseUser: FirebaseUser? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = if (viewType == MESSAGE_TYPE_RIGHT) {
+        val view = if (viewType == messageTypeRight) {
             LayoutInflater.from(parent.context).inflate(R.layout.item_right, parent, false)
         } else {
             LayoutInflater.from(parent.context).inflate(R.layout.item_left, parent, false)
@@ -37,8 +39,16 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
         val chat = chatList[position]
         holder.txtMessage.text = chat.message
 
-        // Example: Load user profile image using Glide
-        // Glide.with(context).load(user.profileImage).placeholder(R.drawable.profile_image).into(holder.imgUser)
+        val db = Firebase.firestore.collection("users")
+        db.whereEqualTo("userId", chat.senderId).get().addOnSuccessListener { snapshot ->
+            if (snapshot != null) {
+                for (document in snapshot) {
+                    Glide.with(context).load(document.getString("profileImage")).placeholder(R.drawable.profile_image).into(holder.imgUser)
+                }
+            }
+        }.addOnFailureListener { exception ->
+            exception.printStackTrace()
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,9 +59,9 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
     override fun getItemViewType(position: Int): Int {
         firebaseUser = FirebaseAuth.getInstance().currentUser
         return if (chatList[position].senderId == firebaseUser?.uid) {
-            MESSAGE_TYPE_RIGHT
+            messageTypeRight
         } else {
-            MESSAGE_TYPE_LEFT
+            messageTypeLeft
         }
     }
 }
