@@ -1,7 +1,6 @@
 package com.uns.matur.activity
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
