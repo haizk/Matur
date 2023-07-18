@@ -1,5 +1,7 @@
 package com.uns.matur.activity
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
@@ -198,6 +200,11 @@ class ProfileActivity : AppCompatActivity() {
     private fun uploadImage() {
         val selectedImageUri = binding.userImage.tag.toString()
         if (selectedImageUri != "") {
+            val dialog = Dialog(this@ProfileActivity)
+            dialog.setContentView(R.layout.dialog_uploading_image)
+            dialog.setCancelable(false)
+            dialog.show()
+
             val storageRef = FirebaseStorage.getInstance().reference.child("profileImages/${FirebaseAuth.getInstance().currentUser!!.uid}")
             val uploadTask = storageRef.putFile(selectedImageUri.toUri())
             uploadTask.continueWithTask { task ->
@@ -208,6 +215,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 storageRef.downloadUrl
             }.addOnCompleteListener { task ->
+                dialog.dismiss()
                 if (task.isSuccessful) {
                     val downloadUri = task.result
                     binding.userImage.tag = downloadUri.toString()
@@ -230,7 +238,8 @@ class ProfileActivity : AppCompatActivity() {
                     Toast.makeText(this@ProfileActivity, "Upload failed", Toast.LENGTH_SHORT).show()
                 }
             }.addOnFailureListener {
-                Toast.makeText(this@ProfileActivity, "Upload failed", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                Toast.makeText(this@ProfileActivity, "No image selected", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(this@ProfileActivity, "No image selected", Toast.LENGTH_SHORT).show()
