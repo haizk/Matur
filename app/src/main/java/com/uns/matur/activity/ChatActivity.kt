@@ -1,15 +1,16 @@
 package com.uns.matur.activity
 
-import android.adservices.topics.Topic
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -18,19 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
+import com.google.firebase.messaging.FirebaseMessaging
 import com.uns.matur.R
-import com.uns.matur.RetrofitInstance
 import com.uns.matur.adapter.ChatAdapter
-import com.uns.matur.adapter.UserAdapter
 import com.uns.matur.databinding.ActivityChatBinding
 import com.uns.matur.model.Chat
 import com.uns.matur.model.NotificationData
 import com.uns.matur.model.PushNotification
-import com.uns.matur.model.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 
 class ChatActivity : AppCompatActivity() {
     private var chatList = ArrayList<Chat>()
@@ -38,7 +35,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var usersCollection: CollectionReference
     private lateinit var firebaseUser: FirebaseUser
-    var topic = ""
+    private var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +49,7 @@ class ChatActivity : AppCompatActivity() {
         var userName = intent.getStringExtra("userName")
         var profileImage = intent.getStringExtra("profileImage")
 
-        binding.chatRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.chatRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 
         usersCollection.whereEqualTo("userId", userId).get().addOnSuccessListener { snapshot ->
             if (snapshot != null) {
@@ -84,7 +81,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.btnSendMessage.setOnClickListener {
-            var message = binding.Message.text.toString().trim()
+            val message = binding.Message.text.toString().trim()
 
             if (message.isEmpty()) {
                 Toast.makeText(applicationContext, "Message is empty", Toast.LENGTH_SHORT).show()
@@ -92,16 +89,31 @@ class ChatActivity : AppCompatActivity() {
                 val senderId = firebaseUser.uid
                 val receiverId = intent.getStringExtra("userId") ?: ""
                 sendMessage(senderId, receiverId, message)
-                topic = "/topics/$userId"
-                PushNotification(
-                    NotificationData( userName!!,message),
-                    topic).also {
-                    sendNotification(it)
-                }
+//                topic = "/topics/$userId"
+//                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        val token = task.result
+//                        // todo sendNotification(token, firebaseUser.uid, message)
+//                    } else {
+//                        Log.e(TAG, "Error getting FCM token", task.exception)
+//                    }
+//                }
+//                PushNotification(
+//                    NotificationData(firebaseUser.uid, message),
+//                    topic
+//                ).also {
+//                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            val token = task.result
+//                            // todo sendNotification(token, firebaseUser.uid, message)
+//                        } else {
+//                            Log.e(TAG, "Error getting FCM token", task.exception)
+//                        }
+//                    }
+//                }
             }
         }
 
-        // harusnya manggil readMessage doang
         if (userId != null) {
             readMessage(firebaseUser.uid, userId)
         }
@@ -119,58 +131,39 @@ class ChatActivity : AppCompatActivity() {
 
         messagesCollection
             .add(messageMap)
-            .addOnSuccessListener { documentReference ->
-                val messageId = documentReference.id
-                showToast("Message sent successfully!")
+            .addOnSuccessListener {
+                Toast.makeText(applicationContext, "Message sent successfully!", Toast.LENGTH_SHORT).show()
                 binding.Message.setText("")
             }
             .addOnFailureListener { e ->
-                showToast("Failed to send message. Please try again.")
+                Toast.makeText(applicationContext, "Failed to send message. Please try again.", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "Error sending message: ${e.message}", e)
             }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun readMessage(senderId: String, receiverId: String) {
         val messagesCollection = db.collection("messages")
 
         messagesCollection
-            .whereEqualTo("senderId", senderId)
-            .whereIn("receiverId", listOf(senderId, receiverId))
-            .orderBy("timestamp", Query.Direction.ASCENDING)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                chatList.clear()
-                for (document in querySnapshot) {
-                    val chat = document.toObject(Chat::class.java)
-                    chatList.add(chat)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.e(TAG, "Error getting messages: ${e.message}", e)
+                    return@addSnapshotListener
                 }
 
-                val chatAdapter = ChatAdapter(this@ChatActivity, chatList)
-                binding.chatRecyclerView.adapter = chatAdapter
-
-                // Scroll to the last message
-                binding.chatRecyclerView.scrollToPosition(chatList.size - 1)
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Error reading messages: ${e.message}", e)
+                if (snapshot != null) {
+                    chatList.clear()
+                    for (document in snapshot) {
+                        val chat = document.toObject(Chat::class.java)
+                        if (chat.senderId == senderId && chat.receiverId == receiverId ||
+                            chat.senderId == receiverId && chat.receiverId == senderId) {
+                            chatList.add(chat)
+                        }
+                    }
+                    val chatAdapter = ChatAdapter(this, chatList)
+                    binding.chatRecyclerView.adapter = chatAdapter
+                }
             }
     }
-
-    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val response = RetrofitInstance.api.postNotification(notification)
-            if(response.isSuccessful) {
-                Log.d("TAG", "Response: ${Gson().toJson(response)}")
-            } else {
-                Log.e("TAG", response.errorBody()!!.string())
-            }
-        } catch(e: Exception) {
-            Log.e("TAG", e.toString())
-        }
-    }
-
 }
