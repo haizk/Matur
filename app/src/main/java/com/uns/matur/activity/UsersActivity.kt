@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.uns.matur.databinding.ActivityUsersBinding
 
 class UsersActivity : AppCompatActivity() {
-    var userList = ArrayList<User>()
+    private var userList = ArrayList<User>()
     private lateinit var binding: ActivityUsersBinding
     private lateinit var db: FirebaseFirestore
 
@@ -50,6 +50,7 @@ class UsersActivity : AppCompatActivity() {
                     } else {
                         Glide.with(this@UsersActivity).load(userDocument.getString("profileImage")).into(binding.imgProfile)
                     }
+                    binding.imgProfile.tag = userDocument.getString("profileImage")
                 } else {
                     Toast.makeText(this@UsersActivity, "No such document", Toast.LENGTH_SHORT).show()
                 }
@@ -69,14 +70,12 @@ class UsersActivity : AppCompatActivity() {
         }
     }
 
-    fun getUsersList() {
+    private fun getUsersList() {
         val usersCollection = db.collection("users")
         usersCollection.get().addOnSuccessListener { documents ->
             for (document in documents) {
                 val user = document.toObject(User::class.java)
-                if (user != null) {
-                    userList.add(user)
-                }
+                userList.add(user)
             }
             val userAdapter = UserAdapter(this@UsersActivity, userList)
             binding.userRecyclerView.adapter = userAdapter
