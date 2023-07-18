@@ -112,14 +112,14 @@ class ProfileActivity : AppCompatActivity() {
             }
             else {
                 if(binding.etEditUserName.text.toString().isNotEmpty() && isUsernameValid(binding.etEditUserName.text.toString())) {
-                    usersCollection.whereEqualTo("userName", binding.etEditUserName.text.toString())
+                    usersCollection.whereEqualTo("userName", binding.etEditUserName.text.toString().lowercase())
                         .get()
                         .addOnSuccessListener { documents ->
                             if (!documents.isEmpty) {
                                 usersCollection.whereEqualTo("userId", firebaseUser.uid)
                                     .get()
                                     .addOnSuccessListener { documents2 ->
-                                        if(documents.documents[0].getString("userName") == documents2.documents[0].getString("userName")) {
+                                        if(documents.documents[0].getString("userName")?.lowercase() == documents2.documents[0].getString("userName")?.lowercase()) {
                                             binding.etUserName.visibility = View.VISIBLE
                                             binding.etEditUserName.visibility = View.GONE
                                             binding.btnEditProfile.text = getString(R.string.edit_profile)
@@ -154,9 +154,10 @@ class ProfileActivity : AppCompatActivity() {
                                     .addOnSuccessListener { documents2 ->
                                         if (documents2 != null && !documents2.isEmpty) {
                                             val userDocument = documents2.first()
-                                            val username = binding.etEditUserName.text.toString()
+                                            val username = binding.etEditUserName.text.toString().lowercase()
                                             userDocument.reference.update("userName", username)
                                             binding.etUserName.text = username
+                                            binding.etEditUserName.setText(username)
                                             Toast.makeText(
                                                 this@ProfileActivity,
                                                 "Username: $username",
@@ -194,7 +195,6 @@ class ProfileActivity : AppCompatActivity() {
     private fun chooseImage() {
         pickImage.launch("image/*")
     }
-
 
     private fun uploadImage() {
         val selectedImageUri = binding.userImage.tag.toString()
