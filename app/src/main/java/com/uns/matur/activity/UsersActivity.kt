@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.uns.matur.R
 import com.uns.matur.adapter.UserAdapter
 import com.uns.matur.model.User
@@ -19,6 +20,7 @@ class UsersActivity : AppCompatActivity() {
     private var userList = ArrayList<User>()
     private lateinit var binding: ActivityUsersBinding
     private lateinit var db: FirebaseFirestore
+    private lateinit var firebaseUser: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,7 @@ class UsersActivity : AppCompatActivity() {
 
         binding.userRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        getUsersList()
-
-        val firebaseUser = FirebaseAuth.getInstance().currentUser!!
+        firebaseUser = FirebaseAuth.getInstance().currentUser!!
         val usersCollection = db.collection("users")
         usersCollection.whereEqualTo("userId", firebaseUser.uid)
             .get()
@@ -59,6 +59,8 @@ class UsersActivity : AppCompatActivity() {
                 Toast.makeText(this@UsersActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
             }
 
+        getUsersList()
+
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
@@ -74,8 +76,10 @@ class UsersActivity : AppCompatActivity() {
         val usersCollection = db.collection("users")
         usersCollection.get().addOnSuccessListener { documents ->
             for (document in documents) {
-                val user = document.toObject(User::class.java)
-                userList.add(user)
+                if(document.getString("userId") != firebaseUser.uid) {
+                    val user = document.toObject(User::class.java)
+                    userList.add(user)
+                }
             }
             val userAdapter = UserAdapter(this@UsersActivity, userList)
             binding.userRecyclerView.adapter = userAdapter
