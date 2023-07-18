@@ -24,4 +24,7 @@
     <color name="colorLightYellow">#FFF9C4</color>
     <color name="colorLightGreen">#C8E6C9</color>
     <color name="colorLightRed">#FFCDD2</color>
+
+    <color name="colorItemLeft">#E6E4E4</color>
+    <color name="colorItemRight">#29627E</color>
 </resources>

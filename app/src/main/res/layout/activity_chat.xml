@@ -43,7 +43,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/l1"
-        android:id="@+id/userRecyclerView"
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
