@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.uns.matur.R
 import com.uns.matur.adapter.ChatAdapter
 import com.uns.matur.databinding.ActivityChatBinding
@@ -79,28 +80,6 @@ class ChatActivity : AppCompatActivity() {
                 val senderId = firebaseUser.uid
                 val receiverId = intent.getStringExtra("userId") ?: ""
                 sendMessage(senderId, receiverId, message)
-//                topic = "/topics/$userId"
-//                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        val token = task.result
-//                        // todo sendNotification(token, firebaseUser.uid, message)
-//                    } else {
-//                        Log.e(TAG, "Error getting FCM token", task.exception)
-//                    }
-//                }
-//                PushNotification(
-//                    NotificationData(firebaseUser.uid, message),
-//                    topic
-//                ).also {
-//                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-//                        if (task.isSuccessful) {
-//                            val token = task.result
-//                            // todo sendNotification(token, firebaseUser.uid, message)
-//                        } else {
-//                            Log.e(TAG, "Error getting FCM token", task.exception)
-//                        }
-//                    }
-//                }
             }
         }
 
@@ -155,5 +134,13 @@ class ChatActivity : AppCompatActivity() {
                     binding.chatRecyclerView.adapter = chatAdapter
                 }
             }
+    }
+
+    fun sendNotification() {
+        val serverKey = "YOUR_SERVER_KEY"
+        val message = "Hello, World!"
+        val tokens = listOf("DEVICE_TOKEN_1", "DEVICE_TOKEN_2") // Add all target device tokens here
+        val title = "YOUR_TITLE"
+        val topic = "YOUR_TOPIC_NAME"
     }
 }
