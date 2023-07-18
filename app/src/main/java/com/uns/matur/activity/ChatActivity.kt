@@ -1,5 +1,6 @@
 package com.uns.matur.activity
 
+import android.adservices.topics.Topic
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +18,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.uns.matur.R
+import com.uns.matur.RetrofitInstance
 import com.uns.matur.adapter.ChatAdapter
 import com.uns.matur.adapter.UserAdapter
 import com.uns.matur.databinding.ActivityChatBinding
 import com.uns.matur.model.Chat
+import com.uns.matur.model.NotificationData
+import com.uns.matur.model.PushNotification
 import com.uns.matur.model.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChatActivity : AppCompatActivity() {
     private var chatList = ArrayList<Chat>()
@@ -30,7 +38,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var usersCollection: CollectionReference
     private lateinit var firebaseUser: FirebaseUser
-
+    var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +84,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.btnSendMessage.setOnClickListener {
-            val message = binding.Message.text.toString().trim()
+            var message = binding.Message.text.toString().trim()
 
             if (message.isEmpty()) {
                 Toast.makeText(applicationContext, "Message is empty", Toast.LENGTH_SHORT).show()
@@ -84,6 +92,12 @@ class ChatActivity : AppCompatActivity() {
                 val senderId = firebaseUser.uid
                 val receiverId = intent.getStringExtra("userId") ?: ""
                 sendMessage(senderId, receiverId, message)
+                topic = "/topics/$userId"
+                PushNotification(
+                    NotificationData( userName!!,message),
+                    topic).also {
+                    sendNotification(it)
+                }
             }
         }
 
@@ -144,6 +158,19 @@ class ChatActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error reading messages: ${e.message}", e)
             }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d("TAG", "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e("TAG", response.errorBody()!!.string())
+            }
+        } catch(e: Exception) {
+            Log.e("TAG", e.toString())
+        }
     }
 
 }
