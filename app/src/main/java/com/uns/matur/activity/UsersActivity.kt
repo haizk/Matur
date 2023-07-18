@@ -1,7 +1,6 @@
 package com.uns.matur.activity
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.uns.matur.databinding.ActivityUsersBinding
-import com.uns.matur.firebase.FirebaseService
 
 class UsersActivity : AppCompatActivity() {
     private var userList = ArrayList<User>()
@@ -28,8 +26,6 @@ class UsersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
-
-        FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser != null) {
