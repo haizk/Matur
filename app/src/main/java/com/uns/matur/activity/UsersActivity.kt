@@ -60,12 +60,12 @@ class UsersActivity : AppCompatActivity() {
                     }
                     binding.imgProfile.tag = userDocument.getString("profileImage")
                 } else {
-                    Toast.makeText(this@UsersActivity, "No such document", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@UsersActivity, "Mboten wonten dokumen", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
                 dialog.dismiss()
-                Toast.makeText(this@UsersActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UsersActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
             }
 
         getUsersList()

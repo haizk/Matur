@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     if (user != null) {
-                        Toast.makeText(applicationContext, "Login success!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Mlebet kasembadan!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, UsersActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)

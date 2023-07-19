@@ -55,36 +55,36 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
             if (TextUtils.isEmpty(userName)) {
-                binding.etName.error = "Username is required!"
+                binding.etName.error = "Asmanipun kedah diisi!"
                 binding.etName.requestFocus()
             }
             else if (isUsernameValid(userName)) {
-                binding.etName.error = "Username badly formatted!"
+                binding.etName.error = "Format asmanipun mboten cocog!"
                 binding.etName.requestFocus()
             }
             else if (TextUtils.isEmpty(email)) {
-                binding.etEmail.error = "Email is required!"
+                binding.etEmail.error = "Email kedah diisi!"
                 binding.etEmail.requestFocus()
 
             }
             else if (isEmailValid(email)) {
-                binding.etEmail.error = "Email badly formatted!"
+                binding.etEmail.error = "Format email mboten cocog!"
                 binding.etEmail.requestFocus()
             }
             else if (TextUtils.isEmpty(password)) {
-                binding.etPassword.error = "Password is required!"
+                binding.etPassword.error = "Password kedah diisi!"
                 binding.etPassword.requestFocus()
             }
             else if (isPasswordValid(password)) {
-                binding.etPassword.error = "Password badly formatted!"
+                binding.etPassword.error = "Format password mboten cocog!"
                 binding.etPassword.requestFocus()
             }
             else if (TextUtils.isEmpty(confirmPassword)) {
-                binding.etConfirmPassword.error = "Confirm password is required!"
+                binding.etConfirmPassword.error = "Konfirmasi Password kedah diisi!"
                 binding.etConfirmPassword.requestFocus()
             }
             else if (password != confirmPassword) {
-                binding.etConfirmPassword.error = "Password does not match!"
+                binding.etConfirmPassword.error = "Password benten!"
                 binding.etConfirmPassword.requestFocus()
             }
             else {
@@ -93,7 +93,7 @@ class SignUpActivity : AppCompatActivity() {
                     if (it.isEmpty) {
                         registerUser(userName, email, password)
                     } else {
-                        binding.etName.error = "Username already exists!"
+                        binding.etName.error = "Asmanipun sampun kedaptar!"
                         binding.etName.requestFocus()
                     }
                 }
@@ -116,21 +116,21 @@ class SignUpActivity : AppCompatActivity() {
                 db.collection("users")
                     .add(hashMap)
                     .addOnSuccessListener {
-                        Toast.makeText(applicationContext, "Sign up success!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Ndaptaripun kasembadan!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         startActivity(intent)
                         finish()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Ndaptaripun gagal!", Toast.LENGTH_SHORT).show()
                     }
 
-            } else if(it.exception.toString().contains("The email address is already in use by another account.")) {
-                binding.etEmail.error = "Email already exists!"
+            } else if(it.exception.toString().contains("Email sampun kedaptar ing akun liyane!")) {
+                binding.etEmail.error = "Email sampun kedaptar!"
                 binding.etEmail.requestFocus()
             } else {
-                Toast.makeText(applicationContext, "Sign up failed!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Ndaptaripun gagal!", Toast.LENGTH_SHORT).show()
             }
         }
     }

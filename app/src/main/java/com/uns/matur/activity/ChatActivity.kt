@@ -75,7 +75,7 @@ class ChatActivity : AppCompatActivity() {
             val message = binding.Message.text.toString().trim()
 
             if (message.isEmpty()) {
-                Toast.makeText(applicationContext, "Message is empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Serat kosong!", Toast.LENGTH_SHORT).show()
             } else {
                 val senderId = firebaseUser.uid
                 val receiverId = intent.getStringExtra("userId") ?: ""
@@ -101,11 +101,11 @@ class ChatActivity : AppCompatActivity() {
         messagesCollection
             .add(messageMap)
             .addOnSuccessListener {
-                Toast.makeText(applicationContext, "Message sent successfully!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Serat sampun kekintun!", Toast.LENGTH_SHORT).show()
                 binding.Message.setText("")
             }
             .addOnFailureListener { e ->
-                Toast.makeText(applicationContext, "Failed to send message. Please try again.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Mboten saged ngintun serat. Cobi malih.", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "Error sending message: ${e.message}", e)
             }
     }

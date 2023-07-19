@@ -79,11 +79,11 @@ class ProfileActivity : AppCompatActivity() {
                     }
                     //Toast.makeText(this@ProfileActivity, "Username: $username", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ProfileActivity, "No such document", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Mboten wonten dokumen!", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
             }
 
         binding.imgBack.setOnClickListener {
@@ -107,7 +107,7 @@ class ProfileActivity : AppCompatActivity() {
                 binding.btnEditProfile.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@ProfileActivity, R.color.colorLightGreen))
                 binding.userImage.setOnClickListener {
                     chooseImage()
-                    Toast.makeText(this@ProfileActivity, "Change profile image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Gantos foto profil", Toast.LENGTH_SHORT).show()
                 }
             }
             else {
@@ -131,16 +131,16 @@ class ProfileActivity : AppCompatActivity() {
                                                     if (documents3 != null && !documents3.isEmpty) {
                                                         uploadImage()
                                                     } else {
-                                                        Toast.makeText(this@ProfileActivity, "No such document", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(this@ProfileActivity, "Mboten wonten dokumen", Toast.LENGTH_SHORT).show()
                                                     }
                                                 }
                                                 .addOnFailureListener { exception ->
-                                                    Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                                                    Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
                                                 }
                                         } else {
-                                            binding.etEditUserName.error = "Username already exists"
+                                            binding.etEditUserName.error = "Asmanipun sampun kedaptar"
                                             binding.etEditUserName.requestFocus()
-                                            Toast.makeText(this@ProfileActivity, "Username already exists", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@ProfileActivity, "Asmanipun sampun kedaptar", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                             } else {
@@ -165,21 +165,21 @@ class ProfileActivity : AppCompatActivity() {
                                             ).show()
                                             uploadImage()
                                         } else {
-                                            Toast.makeText(this@ProfileActivity, "No such document", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@ProfileActivity, "Mboten wonten dokumen", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                     .addOnFailureListener { exception ->
-                                        Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
                                     }
                             }
                         }
                         .addOnFailureListener { exception ->
-                            Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
                         }
                 } else {
-                    binding.etEditUserName.error = "Username badly formatted!"
+                    binding.etEditUserName.error = "Format asmanipun mboten cocog!"
                     binding.etEditUserName.requestFocus()
-                    Toast.makeText(this@ProfileActivity, "Username badly formatted!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Format asmanipun mboten cocog!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -226,22 +226,22 @@ class ProfileActivity : AppCompatActivity() {
                                 userDocument.reference.update("profileImage", downloadUri.toString())
                                 Toast.makeText(this@ProfileActivity, userDocument.getString("profileImage"), Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(this@ProfileActivity, "No such document", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@ProfileActivity, "Mboten wonten dokumen", Toast.LENGTH_SHORT).show()
                             }
                         }
                         .addOnFailureListener { exception ->
-                            Toast.makeText(this@ProfileActivity, "get failed with $exception", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
                         }
                     Glide.with(this@ProfileActivity).load(downloadUri).into(binding.userImage)
                 } else {
-                    Toast.makeText(this@ProfileActivity, "Upload failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Gagal ngunggah", Toast.LENGTH_SHORT).show()
                 }
             }.addOnFailureListener {
                 dialog.dismiss()
-                Toast.makeText(this@ProfileActivity, "No image selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProfileActivity, "Mboten wonten foto ingkang dipilih", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(this@ProfileActivity, "No image selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ProfileActivity, "Mboten wonten foto ingkang dipilih", Toast.LENGTH_SHORT).show()
         }
     }
 }
