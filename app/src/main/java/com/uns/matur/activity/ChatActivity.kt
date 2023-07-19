@@ -101,12 +101,12 @@ class ChatActivity : AppCompatActivity() {
         messagesCollection
             .add(messageMap)
             .addOnSuccessListener {
-                Toast.makeText(applicationContext, "Serat sampun kekintun!", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(applicationContext, "Serat sampun kekintun!", Toast.LENGTH_SHORT).show()
                 binding.Message.setText("")
             }
             .addOnFailureListener { e ->
                 Toast.makeText(applicationContext, "Mboten saged ngintun serat. Cobi malih.", Toast.LENGTH_SHORT).show()
-                Log.e(TAG, "Error sending message: ${e.message}", e)
+                // Log.e(TAG, "Error sending message: ${e.message}", e)
             }
     }
 

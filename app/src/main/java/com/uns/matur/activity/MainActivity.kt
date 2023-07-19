@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val builder = AlertDialog.Builder(this@MainActivity)
-                builder.setTitle("Exit")
-                builder.setMessage("Are you sure you want to close the application?")
-                builder.setPositiveButton("Yes") { _, _ ->
+                builder.setTitle("Medal")
+                builder.setMessage("Saestu ajeng medal saking aplikasi?")
+                builder.setPositiveButton("Nggih") { _, _ ->
                     finishAffinity()
                 }
-                builder.setNegativeButton("No") { dialog, _ ->
+                builder.setNegativeButton("Mboten") { dialog, _ ->
                     dialog.dismiss()
                 }
                 builder.show()
