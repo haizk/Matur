@@ -52,19 +52,19 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.etPassword.text.toString()
 
             if (TextUtils.isEmpty(email)) {
-                binding.etEmail.error = "Email is required!"
+                binding.etEmail.error = "Email kedah diisi!"
                 binding.etEmail.requestFocus()
             }
             else if(isEmailValid(email)) {
-                binding.etEmail.error = "Email badly formatted!"
+                binding.etEmail.error = "Format email mboten cocog!"
                 binding.etEmail.requestFocus()
             }
             else if (TextUtils.isEmpty(password)) {
-                binding.etPassword.error = "Password is required!"
+                binding.etPassword.error = "Password kedah diisi!"
                 binding.etPassword.requestFocus()
             }
             else if (isPasswordValid(password)) {
-                binding.etPassword.error = "Password badly formatted!"
+                binding.etPassword.error = "Format password mboten cocog!"
                 binding.etPassword.requestFocus()
             }
             else {
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 else {
-                    binding.etEmail.error = "Invalid credentials!"
+                    binding.etEmail.error = "Email utawa password mboten cocog!"
                     binding.etEmail.requestFocus()
                 }
             }
