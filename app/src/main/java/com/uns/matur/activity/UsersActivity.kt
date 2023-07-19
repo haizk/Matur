@@ -28,9 +28,6 @@ class UsersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_users)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser != null) {
-            Toast.makeText(this@UsersActivity, "Sugeng rawuh, ${currentUser.email}", Toast.LENGTH_SHORT).show()
-        }
 
         db = Firebase.firestore
 

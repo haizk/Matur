@@ -3,6 +3,7 @@ package com.uns.matur.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
+            Toast.makeText(this@MainActivity, "Sugeng rawuh, ${currentUser.email}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@MainActivity, UsersActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
