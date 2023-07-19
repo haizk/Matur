@@ -224,13 +224,13 @@ class ProfileActivity : AppCompatActivity() {
                             if (documents != null && !documents.isEmpty) {
                                 val userDocument = documents.first()
                                 userDocument.reference.update("profileImage", downloadUri.toString())
-                                Toast.makeText(this@ProfileActivity, userDocument.getString("profileImage"), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@ProfileActivity, "Profil kasil diganti", Toast.LENGTH_SHORT).show()
                             } else {
                                 Toast.makeText(this@ProfileActivity, "Mboten wonten dokumen", Toast.LENGTH_SHORT).show()
                             }
                         }
                         .addOnFailureListener { exception ->
-                            Toast.makeText(this@ProfileActivity, "gagal amargi $exception", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProfileActivity, "Gagal amargi $exception", Toast.LENGTH_SHORT).show()
                         }
                     Glide.with(this@ProfileActivity).load(downloadUri).into(binding.userImage)
                 } else {
@@ -238,7 +238,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }.addOnFailureListener {
                 dialog.dismiss()
-                Toast.makeText(this@ProfileActivity, "Mboten wonten foto ingkang dipilih", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProfileActivity, "Profil kasil diganti, mboten wonten foto ingkang dipilih", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(this@ProfileActivity, "Mboten wonten foto ingkang dipilih", Toast.LENGTH_SHORT).show()
